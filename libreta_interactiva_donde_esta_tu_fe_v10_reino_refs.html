@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Libreta de Predicación | ¿Dónde está tu fe?</title>
+<style>
+:root{
+--radius:18px;
+--shadow:0 18px 45px rgba(2,6,23,.16);
+--shadow2:0 10px 26px rgba(2,6,23,.12);
+--ring:0 0 0 4px rgba(245, 200, 120, .20);
+--gold:#f5c878;
+--gold2:#f1b24a;
+--ink:#0b1220;
+--muted:#475569;
+--red:#c0392b;
+--idea:#166534;
+--repeat:#0f766e;
+--question:#6d28d9;
+--line:rgba(15,23,42,.10);
+--app-bg:#f6f7fb;
+--paper-bg:#ffffff;
+--topbar-bg:rgba(255,255,255,.78);
+--topbar-ink:#0b1220;
+}
+:root.dark{
+--app-bg:#050814;
+--paper-bg:#0b1220;
+--ink:#e5e7eb;
+--muted:#94a3b8;
+--line:rgba(255,255,255,.12);
+--topbar-bg:rgba(11,18,32,.72);
+--topbar-ink:#f8fafc;
+--shadow:0 22px 60px rgba(0,0,0,.45);
+--shadow2:0 12px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0;
+background:
+radial-gradient(1200px 900px at 15% 10%, rgba(245,200,120,.18), transparent 55%),
+radial-gradient(1200px 900px at 85% 30%, rgba(109,40,217,.12), transparent 55%),
+var(--app-bg);
+font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+color:var(--ink);
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:98px;
+}
+#top-bar{
+position:fixed;
+top:0;
+left:0;
+right:0;
+z-index:1000;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+padding:14px 14px;
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
+background:linear-gradient(180deg, var(--topbar-bg), rgba(255,255,255,.55));
+border-bottom:1px solid var(--line);
+box-shadow:0 10px 30px rgba(2,6,23,.10);
+}
+:root.dark #top-bar{
+background:linear-gradient(180deg, var(--topbar-bg), rgba(11,18,32,.50));
+box-shadow:0 12px 34px rgba(0,0,0,.30);
+}
+#display{
+font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+font-size:2.6rem;
+font-weight:900;
+letter-spacing:.8px;
+color:var(--gold2);
+min-width:170px;
+text-align:center;
+text-shadow:0 1px 0 rgba(0,0,0,.08);
+}
+.btn{
+padding:11px 14px;
+border-radius:14px;
+cursor:pointer;
+font-weight:900;
+letter-spacing:.2px;
+font-size:13px;
+border:1px solid transparent;
+transition: transform .08s ease, filter .18s ease, box-shadow .18s ease, background .18s ease;
+user-select:none;
+display:inline-flex;
+align-items:center;
+gap:8px;
+}
+.btn:active{transform:scale(.98)}
+.btn:focus{outline:none;box-shadow:var(--ring)}
+#startStop{
+background:linear-gradient(135deg, #34d399, #22c55e);
+color:#052e16;
+}
+#saveBtn{
+background:linear-gradient(135deg, #93c5fd, #60a5fa);
+color:#0b1220;
+}
+#downloadBtn{
+background:linear-gradient(135deg, #c4b5fd, #a78bfa);
+color:#0b1220;
+}
+.darkBtn{
+background:rgba(15,23,42,.06);
+color:var(--topbar-ink);
+border:1px solid var(--line);
+}
+:root.dark .darkBtn{
+background:rgba(255,255,255,.06);
+}
+#colorPicker{
+width:46px;
+height:40px;
+border:none;
+background:transparent;
+padding:0;
+border-radius:12px;
+overflow:hidden;
+}
+.shell{
+width:min(980px, 95vw);
+margin:18px 0 46px 0;
+}
+.notebook-page{
+position:relative;
+background:
+linear-gradient(180deg, rgba(245,200,120,.06), transparent 18%),
+var(--paper-bg);
+width:100%;
+padding:48px 44px;
+border-radius:26px;
+box-shadow:var(--shadow);
+border:1px solid var(--line);
+border-left:10px solid var(--gold);
+min-height:70vh;
+font-size:30px;
+line-height:1.6;
+outline:none;
+}
+:root.dark .notebook-page{
+background:
+linear-gradient(180deg, rgba(245,200,120,.08), rgba(11,18,32,.35) 22%),
+var(--paper-bg);
+}
+@media (min-width: 920px){
+.notebook-page{padding:72px 74px;font-size:34px}
+}
+h1{
+margin:0 0 34px 0;
+text-align:center;
+font-size:2.05em;
+line-height:1.08;
+letter-spacing:-.7px;
+color:var(--ink);
+}
+h1:after{
+content:"";
+display:block;
+width:180px;
+height:3px;
+margin:18px auto 0 auto;
+background:linear-gradient(90deg, transparent, var(--gold2), transparent);
+border-radius:999px;
+opacity:.9;
+}
+h2{
+margin:54px 0 12px 0;
+font-size:1.18em;
+text-transform:uppercase;
+letter-spacing:.8px;
+color:var(--muted);
+border-left:6px solid var(--gold2);
+padding-left:16px;
+}
+h3{
+margin:26px 0 10px 0;
+font-size:1.05em;
+font-style:italic;
+color:var(--ink);
+opacity:.92;
+}
+.bible-text{
+color:var(--red);
+font-weight:800;
+display:block;
+margin:14px 0;
+font-style:italic;
+}
+.citation{
+color:var(--ink);
+font-weight:950;
+display:block;
+text-decoration:none;
+font-size:.92em;
+letter-spacing:.3px;
+}
+.sub-point{
+color:var(--idea);
+font-weight:950;
+display:block;
+margin-top:28px;
+padding-bottom:10px;
+border-bottom:1px solid var(--line);
+}
+hr{
+border:0;
+height:2px;
+background:linear-gradient(90deg, transparent, var(--line), transparent);
+margin:46px 0;
+}
+.mark-idea,
+.mark-repeat,
+.mark-question{
+display:block;
+padding:14px 16px;
+border-radius:18px;
+margin:18px 0;
+border:1px solid var(--line);
+backdrop-filter: blur(6px);
+-webkit-backdrop-filter: blur(6px);
+}
+.mark-idea{
+background:rgba(22,101,52,.08);
+border-left:10px solid rgba(22,101,52,.55);
+}
+.mark-repeat{
+background:rgba(15,118,110,.09);
+border-left:10px solid rgba(15,118,110,.60);
+}
+.mark-question{
+background:rgba(109,40,217,.09);
+border-left:10px solid rgba(109,40,217,.60);
+font-weight:950;
+}
+#toast{
+position:fixed;
+bottom:18px;
+background:linear-gradient(135deg, #34d399, #f5c878);
+color:#052e16;
+padding:10px 18px;
+border-radius:999px;
+display:none;
+z-index:3000;
+font-weight:950;
+box-shadow:var(--shadow2);
+border:1px solid rgba(255,255,255,.20);
+}
+@media print{
+#top-bar,#toast{display:none !important}
+body{background:#fff;padding-top:0}
+.shell{width:100%;max-width:none;margin:0}
+.notebook-page{box-shadow:none;border-radius:0;border:0;border-left:10px solid var(--gold)}
+}
+</style>
+</head>
+<body>
+
+<div id="top-bar">
+<div id="display">00:00:00</div>
+<button id="startStop" class="btn" type="button">Iniciar</button>
+<button id="saveBtn" class="btn" type="button">💾 Guardar</button>
+<button id="downloadBtn" class="btn" type="button">📥 Exportar</button>
+<button id="themeBtn" class="btn darkBtn" type="button" title="Claro / Oscuro">Modo</button>
+<button id="undoBtn" class="btn darkBtn" type="button" title="Deshacer">↩︎</button>
+<button id="redoBtn" class="btn darkBtn" type="button" title="Rehacer">↪︎</button>
+<button id="zoomOut" class="btn darkBtn" type="button">A-</button>
+<button id="zoomIn" class="btn darkBtn" type="button">A+</button>
+<button id="colorBtn" class="btn darkBtn" type="button">Color</button>
+<input id="colorPicker" type="color" value="#2c3e50" aria-label="Color de fuente">
+</div>
+
+<div class="shell">
+<div class="notebook-page" id="editor" contenteditable="true" spellcheck="false">
+<div style="margin-bottom:40px;">
+<span class="citation" style="font-weight:900;">BUENA NOTICIA</span>
+<span class="bible-text" style="color:#c0392b;">
+Si somos infieles, Él permanece fiel,<br>
+porque no puede negarse a sí mismo.
+</span>
+<span class="citation" style="font-weight:900;">2 Timoteo 2:13 (NVI)</span>
+</div>
+
+<h1>¿Dónde está tu fe?</h1>
+<p style="text-align:center; font-style:italic;">Cuando el camino está decidido,<br>pero el trayecto es turbulento</p>
+
+<span class="citation">Texto base</span>
+<span class="bible-text">Lucas 8:22–25</span>
+
+<span class="citation">Lucas 8:22–25 (NVI)</span>
+<span class="bible-text">22 Un día Jesús dijo a sus discípulos: «Crucemos al otro lado del lago». Así que subieron a la barca y se hicieron a la mar.<br><br>23 Mientras navegaban, él se quedó dormido. Entonces se desató una tormenta tan fuerte que la barca comenzó a hundirse, y corrían peligro.<br><br>24 Los discípulos fueron a despertarlo. «¡Maestro, Maestro! —gritaron—, ¡vamos a morir!» Él se levantó y reprendió al viento y a las olas embravecidas. Estas se calmaron, y todo quedó tranquilo.<br><br>25 «¿Dónde está la fe de ustedes?», les dijo. Con temor y asombro, ellos se decían unos a otros: «¿Quién es este, que manda aun a los vientos y al agua, y lo obedecen?».</span>
+
+<hr>
+
+<h2>Proposición</h2>
+<span class="mark-idea">Desde la determinación al destino pueden haber tormentas,<br>pero la fe del Hijo es la que nos asiste<br>desde la Palabra recibida<br>hasta el destino alcanzado.</span>
+
+<hr>
+
+<h2>Introducción</h2>
+<h3>Una fe bien ubicada</h3>
+
+<p>No todo lo que nos confronta es una tormenta.<br>A veces es un plan.<br>A veces es un reto.<br>Y muchas veces, sí, es una tormenta.</p>
+
+<p>Pero en todos los casos, la vida exige algo de nosotros.</p>
+
+<p>Cuando la vida exige, Jesús no pregunta cuánta fe tienes.<br>No pregunta por qué dudas.<br>Hace una sola pregunta:</p>
+
+<span class="mark-question">¿Dónde está tu fe?</span>
+
+<p>No es una pregunta de cantidad.<br>Es una pregunta de ubicación.</p>
+
+<p>Todos creemos en algo o en alguien.<br>El punto no es si creemos,<br>el punto es dónde aterriza la fe cuando el momento presiona.</p>
+
+<hr>
+
+<h2>I. La determinación</h2>
+<h3>La fe nace de una Palabra recibida</h3>
+<span class="citation">Referencia cruzada</span>
+<span class="bible-text" style="color:var(--ink); font-style:normal; font-weight:900;">Romanos 10:17 (NVI)</span>
+<span class="bible-text">“Así que la fe viene como resultado de oír el mensaje, y el mensaje que se oye es la palabra de Cristo”.</span>
+
+
+<span class="bible-text">“Pasemos a la otra ribera”.</span>
+
+<p>Antes de la tormenta hubo una palabra.<br>Antes del viento hubo una determinación.<br>Antes del trayecto hubo destino.</p>
+
+<p>La fe no nace cuando la barca se sacude.<br>La fe nace cuando se recibe una Palabra.</p>
+
+<span class="mark-repeat">La tormenta no activa la fe.<br>La tormenta revela dónde estaba puesta.</span>
+
+<p>Por eso Jesús no corrige primero la tormenta.<br>Corrige la ubicación de la fe.</p>
+
+<hr>
+
+<h2>II. La revelación</h2>
+<h3>La fe revela el eterno conocimiento de Dios</h3>
+<span class="citation">Referencia cruzada</span>
+<span class="bible-text" style="color:var(--ink); font-style:normal; font-weight:900;">Efesios 1:4 (NVI)</span>
+<span class="bible-text">“Dios nos escogió en él antes de la creación del mundo, para que seamos santos y sin mancha delante de él”.</span>
+
+
+<p>Si Jesús dijo “pasemos”,<br>entonces en el eterno conocimiento de Dios<br>ya existían las condiciones para llegar.</p>
+
+<span class="mark-idea">Todo lo que será, ya fue.</span>
+
+<p>La fe no se centra en el instante vivido,<br>sino en la Palabra creída.</p>
+
+<p>Si hoy tengo la convicción de que mañana comeré mangos,<br>esa certeza existe porque años atrás<br>Dios movió la mano de alguien para sembrar una planta.</p>
+
+<span class="mark-repeat">La fe no crea el árbol.<br>La fe reconoce que el árbol ya fue plantado.</span>
+
+<p>No es mi propia fe.<br>Es la fe del Hijo obrando en mí.</p>
+
+<p>Si puedo creer que algo ocurrirá,<br>es porque en la fe del Hijo ya ocurrió.</p>
+
+<p>Esto revela un Dios que anticipa,<br>que provee antes,<br>y que no deja ninguna fe sin sustancia.</p>
+
+<hr>
+
+<h2>III. La identidad</h2>
+<h3>La tormenta puede sacudirnos, pero no nos redefine</h3>
+<span class="citation">Referencia cruzada</span>
+<span class="bible-text" style="color:var(--ink); font-style:normal; font-weight:900;">Romanos 8:15 (NVI)</span>
+<span class="bible-text">“Y ustedes no recibieron un espíritu que de nuevo los esclavice al miedo, sino el Espíritu que los adopta como hijos y les permite clamar: ‘¡Abba! ¡Padre!’”.</span>
+
+
+<p>Las tormentas no son fallas del sistema.<br>Son escenarios.</p>
+
+<p>Escenarios donde se manifiesta lo que somos<br>por medio de la obra de Cristo.</p>
+
+<span class="mark-idea">Ser hijo no significa ausencia de tormentas.<br>Significa presencia de gobierno.</span>
+
+<p>La vida puede tambalearse,<br>pero ya no puede cambiar.</p>
+
+<p>La tormenta puede mojar la barca,<br>pero no puede editar el destino.</p>
+
+<p>Hay un solo Rey.<br>Un solo Señor.<br>Un solo Gobierno.</p>
+
+<p>Cuando eso se reconoce,<br>el miedo deja de ser la respuesta natural.</p>
+
+<hr>
+
+<h2>IV. La capacitación</h2>
+<h3>La fe del Hijo nos asiste en todo el trayecto</h3>
+<span class="citation">Referencia cruzada</span>
+<span class="bible-text" style="color:var(--ink); font-style:normal; font-weight:900;">2 Timoteo 1:7 (NVI)</span>
+<span class="bible-text">“Pues Dios no nos ha dado un espíritu de timidez, sino de poder, de amor y de dominio propio”.</span>
+
+
+<span class="sub-point">Primer recurso</span>
+<p>Ya no estoy solo.<br>Alguien está en mi barca.<br>Más aún, alguien está en mi vida.</p>
+
+<span class="sub-point">Segundo recurso</span>
+<p>Autoridad por identidad.<br>No puedo ser Hijo y no tener autoridad.<br>La autoridad no se gana, se porta.</p>
+
+<span class="sub-point">Tercer recurso</span>
+<p>Gobierno propio.</p>
+
+<p>La fe me da acceso a un trono.<br>No para gobernar a otros,<br>sino para gobernar mi propia vida.</p>
+
+<p>Para que no gobierne el miedo.<br>Para que no gobierne la prisa.<br>Para que no gobierne la urgencia.</p>
+
+<span class="mark-repeat">Gobierno desde la fe.</span>
+
+<p>Creyendo quién es Dios.<br>Creyendo quién soy yo en Él.<br>Creyendo todo lo que he recibido<br>para vivir la vida que Él me dio.</p>
+
+<hr>
+
+<div style="text-align:center; border-top:3px solid var(--accent); padding-top:30px;">
+<h2>Conclusión</h2>
+<h3>De la Palabra al destino</h3>
+
+<p>Desde la determinación al destino pueden haber tormentas.<br>Eso es real.</p>
+
+<span class="mark-idea">Pero la fe del Hijo nos asiste<br>desde la Palabra recibida<br>hasta el destino alcanzado.</span>
+
+<p>Por eso, cuando la vida exige,<br>la pregunta sigue siendo la misma:</p>
+
+<span class="mark-question">¿Dónde está tu fe?</span>
+
+<p>No para juzgarte.<br>Sino para devolverte al lugar correcto.</p>
+</div>
+</div>
+</div>
+
+<div id="toast">✅ Guardado</div>
+
+<script>
+const STORAGE_KEY = "libreta_donde_esta_tu_fe_interactiva_v2";
+const editor = document.getElementById("editor");
+const toast = document.getElementById("toast");
+
+window.addEventListener("load", ()=>{
+const saved = localStorage.getItem(STORAGE_KEY);
+if(saved) editor.innerHTML = saved;
+});
+
+function flash(msg){
+toast.textContent = msg;
+toast.style.display="block";
+setTimeout(()=>toast.style.display="none", 1600);
+}
+
+function saveDoc(){
+localStorage.setItem(STORAGE_KEY, editor.innerHTML);
+flash("✅ Guardado");
+}
+document.getElementById("saveBtn").addEventListener("click", saveDoc);
+
+document.addEventListener("keydown", (e)=>{
+const k = e.key.toLowerCase();
+if((e.ctrlKey || e.metaKey) && k==="s"){e.preventDefault();saveDoc();}
+if((e.ctrlKey || e.metaKey) && k==="z"){e.preventDefault();document.execCommand("undo");}
+if((e.ctrlKey || e.metaKey) && (k==="y" || (e.shiftKey && k==="z"))){e.preventDefault();document.execCommand("redo");}
+});
+
+/* Undo/Redo buttons */
+document.getElementById("undoBtn").addEventListener("click", ()=>document.execCommand("undo"));
+document.getElementById("redoBtn").addEventListener("click", ()=>document.execCommand("redo"));
+
+/* Export */
+function exportHtml(){
+const content = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Libreta</title></head><body>${editor.innerHTML}</body></html>`;
+const blob = new Blob([content],{type:"text/html"});
+const a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "Libreta_Donde_Esta_Tu_Fe.html";
+a.click();
+}
+
+document.getElementById("downloadBtn").addEventListener("click", ()=>{
+const choice = prompt("Escribe 1 para HTML, 2 para PDF (Imprimir)","1");
+if(choice==="2"){window.print();return;}
+exportHtml();
+});
+
+/* Timer */
+let startTime = 0;
+let elapsed = 0;
+let timerId = null;
+const disp = document.getElementById("display");
+const ssBtn = document.getElementById("startStop");
+
+function fmt(ms){
+let h = Math.floor(ms/3600000);
+let m = Math.floor((ms%3600000)/60000);
+let s = Math.floor((ms%60000)/1000);
+return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function tick(){elapsed = Date.now() - startTime; disp.textContent = fmt(elapsed);}
+function startTimer(){
+startTime = Date.now() - elapsed;
+timerId = setInterval(tick, 1000);
+ssBtn.textContent = "Pausar";
+ssBtn.style.background = "#ef4444";
+}
+function pauseTimer(){
+clearInterval(timerId);
+timerId = null;
+ssBtn.textContent = "Iniciar";
+ssBtn.style.background = "var(--ok)";
+}
+ssBtn.addEventListener("click", ()=>{ if(timerId) pauseTimer(); else startTimer(); });
+
+/* Font size (whole editor) */
+function currentFontSize(){
+const s = window.getComputedStyle(editor).fontSize;
+return parseFloat(s) || 32;
+}
+function setFontSize(px){
+const clamped = Math.max(18, Math.min(60, px));
+editor.style.fontSize = clamped + "px";
+flash("🔠 Tamaño: " + clamped + "px");
+}
+document.getElementById("zoomIn").addEventListener("click", ()=>setFontSize(currentFontSize()+2));
+document.getElementById("zoomOut").addEventListener("click", ()=>setFontSize(currentFontSize()-2));
+
+/* Font color (selection if any, else whole editor) */
+const picker = document.getElementById("colorPicker");
+document.getElementById("colorBtn").addEventListener("click", ()=>picker.click());
+
+function applyColor(hex){
+const sel = window.getSelection();
+if(sel && sel.toString().length>0){
+document.execCommand("styleWithCSS", false, true);
+document.execCommand("foreColor", false, hex);
+flash("🎨 Color aplicado a selección");
+return;
+}
+editor.style.color = hex;
+flash("🎨 Color aplicado a toda la libreta");
+}
+
+picker.addEventListener("input", (e)=>applyColor(e.target.value));
+
+/* Theme toggle */
+const themeBtn = document.getElementById("themeBtn");
+const root = document.documentElement;
+
+function setTheme(next){
+  root.classList.remove("light","dark");
+  root.classList.add(next);
+  localStorage.setItem("libreta_theme", next);
+}
+
+setTheme(localStorage.getItem("libreta_theme") || "light");
+
+themeBtn.addEventListener("click", ()=>{
+  const next = root.classList.contains("dark") ? "light" : "dark";
+  setTheme(next);
+});
+
+</script>
+
+</body>
+</html>
